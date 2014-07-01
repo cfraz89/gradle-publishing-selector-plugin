@@ -5,6 +5,8 @@ A small plugin which allows a project to specify which repository it should be p
 Instead of defining a single repository manually (so that the publish task pushes to this repository):
 
 ```groovy
+apply plugin: 'maven-publish'
+
 repositories {
     maven {
         name = 'myrepository1'
@@ -33,6 +35,7 @@ publishing {
 This plugin will allow you to specify the name of a repository, out of the repositories specified in the dependency repositories:
 
 ```groovy
+apply plugin: 'maven-publish'
 apply plugin: 'publishing-selector'
 
 repositories {
@@ -83,5 +86,33 @@ buildscript {
     dependencies {
         classpath 'au.org.trogdor.gradle-plugins:publishing-selector:+'
     }
+}
+```
+
+Usage
+=================
+It is important to have a publishing plugin loaded while using this plugin. If neither the 'publishing' nor 'maven-publish' plugin have been loaded, this will do nothing. As seen before, example usage is as such:
+
+```groovy
+apply plugin: 'maven-publish'
+apply plugin: 'publishing-selector'
+
+repositories {
+    maven {
+        name = 'myrepository1'
+        url = 'http://nexus/myrepository1'
+    }
+    maven {
+        name = 'myrepository2'
+        url = 'http://nexus/myrepository2'
+    }
+    maven {
+        name = 'myrepository2.snapshot'
+        url = 'http://nexus/myrepository2'
+    }
+}
+
+publishingRepository {
+    repository  'myrepository1'
 }
 ```
